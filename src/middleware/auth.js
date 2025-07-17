@@ -8,7 +8,7 @@ export async function restrictToLoggedinUserOnly(req,res,next) {
     const userUid = req.cookies?.uid;
 
     if (!userUid)
-        return res.sendFile(join(__dirname, '../../public/login/login.html'));
+        return res.sendFile(join(__dirname, '..//..//public/index.html'));
 
     const user = getUser(userUid);
     if (!user)
