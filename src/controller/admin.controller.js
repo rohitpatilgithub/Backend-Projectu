@@ -45,7 +45,7 @@ export const handleUserLogin = async (req, res) => {
     setUser(sessionId, user);
     res.cookie("uid", sessionId, {
       httpOnly: true,
-      sameSite: "none", // or "Strict" for security
+      sameSite: "None", // or "Strict" for security
       secure: true
     });
     console.log(sessionId);
