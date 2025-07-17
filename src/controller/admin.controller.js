@@ -46,7 +46,7 @@ export const handleUserLogin = async (req, res) => {
     res.cookie("uid", sessionId, {
       httpOnly: true,
       sameSite: "Lax", // or "Strict" for security
-      secure: false
+      secure: true
     });
     console.log(sessionId);
     return res.status(200).json({ message: "User exists" });
