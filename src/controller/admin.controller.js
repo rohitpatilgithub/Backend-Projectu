@@ -61,8 +61,8 @@ export const singUpUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   res.sendFile(path.join(__dirname, "..//..//public/index.html"));
-};
+};  
 
 export const homePage = async (req, res) => {
-  res.sendFile(path.join(__dirname, "..//..//public/crud/crud.html"));
+  res.sendFile(path.join(__dirname, "../../public/admin/crud/crud.html"));
 };
