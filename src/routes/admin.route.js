@@ -8,6 +8,6 @@ router.post('/signup',postAdmin);
 router.get('/signup',singUpUser);
 router.post('/login',handleUserLogin);
 router.get('/login',loginUser);
-router.get('/index',restrictToLoggedinUserOnly,homePage)
+router.get('/crud',restrictToLoggedinUserOnly,homePage)
 
 export default router;

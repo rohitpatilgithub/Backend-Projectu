@@ -17,7 +17,7 @@ async function userLogin(e) {
         if(!userData.ok){
             throw new Error('Failed to add new User login')
         }
-        window.location.href = "/admin/index"
+        window.location.href = "/admin/crud"
     } catch (error) {
         console.error("Failed to post :", error);
         window.location.href = "/admin/signup"
