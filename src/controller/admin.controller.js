@@ -64,5 +64,5 @@ export const loginUser = async (req, res) => {
 };  
 
 export const homePage = async (req, res) => {
-  res.sendFile(path.join(__dirname, "../../public/crud/crud.html"));
+  res.sendFile(path.join(__dirname, "../../public/admin/crud.html"));
 };

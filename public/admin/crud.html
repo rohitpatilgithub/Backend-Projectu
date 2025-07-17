@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management System</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --navy: #0D1B2A;
+      --dark-blue: #1B263B;
+      --blue: #274C77;
+      --muted-blue: #6096BA;
+      --light-blue: #A3CEF1;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--white);
+      min-height: 100vh;
+      color: #1a4d42;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .bg-gradient-overlay {
+      display: none;
+    }
+
+    .particle {
+      display: none;
+    }
+
+    /* Professional Header */
+    .header {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fffe 100%);
+      padding: 60px 0;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(26, 77, 66, 0.08);
+      margin-bottom: 60px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23388a7a" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="20" fill="url(%23grid)"/></svg>');
+      opacity: 0.3;
+    }
+
+    .header h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #1a4d42;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .header p {
+      font-size: 1.3rem;
+      color: #388a7a;
+      font-weight: 500;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Floating Elements */
+    .floating-shape {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .floating-shape-1 {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(45deg, #4a657c, #388a7a);
+      border-radius: 50%;
+      top: 20%;
+      left: 10%;
+      opacity: 0.1;
+    }
+
+    .floating-shape-2 {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(45deg, #4a657c, #7ba69e);
+      border-radius: 30%;
+      top: 10%;
+      right: 10%;
+      opacity: 0.08;
+    }
+
+    .floating-shape-3 {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(45deg, #4a657c, #c8d6d3);
+      border-radius: 20%;
+      top: 15%;
+      left: 75%;
+      opacity: 0.12;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 30px;
+    }
+
+    /* Card Grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    /* Base Card Styles */
+    .card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 10px 40px rgba(26, 77, 66, 0.08);
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      border-radius: 24px 24px 0 0;
+      transition: all 0.3s ease;
+    }
+
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(26, 77, 66, 0.52);
+      border-color: rgba(56, 138, 122, 0.2);
+    }
+
+    .card h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1a4d42;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    /* Form Styling */
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #1a4d42;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .input-container {
+      position: relative;
+    }
+
+    .input-container input {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid #e6f7f3;
+      border-radius: 12px;
+      font-size: 1rem;
+      background: #ffffff;
+      color: #1a4d42;
+      outline: none;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .input-container input::placeholder {
+      color: #7ba69e;
+    }
+
+    .input-container input:focus {
+      border-color: #388a7a;
+      box-shadow: 0 0 0 4px rgba(56, 138, 122, 0.1);
+    }
+
+    .input-glow {
+      display: none;
+    }
+
+    /* Professional Buttons */
+    button {
+      width: 100%;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: none;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+      font-family: inherit;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    button:hover::before {
+      left: 100%;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    /* Button Variants */
+    #add-user-form button {
+      background: linear-gradient(135deg, #4a7c59 0%, #388a7a 100%);
+      color: white;
+      box-shadow: 0 8px 25px rgba(74, 124, 89, 0.3);
+    }
+
+    #add-user-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(74, 124, 89, 0.4);
+    }
+
+    #delete-post-form button {
+      background: linear-gradient(135deg, #4a7c59 0%, #388a7a 100%);
+      color: white;
+      box-shadow: 0 8px 25px rgba(74, 124, 89, 0.3);
+    }
+
+    #delete-post-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(26, 77, 66, 0.4);
+    }
+
+    #update-post-form button {
+      background: linear-gradient(135deg, #4a7c59 0%, #388a7a 100%);
+      color: white;
+      box-shadow: 0 8px 25px rgba(74, 124, 89, 0.3);
+    }
+
+    #update-post-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(56, 138, 122, 0.4);
+    }
+
+    #user-btn {
+      padding: 20px 20px;
+      background: linear-gradient(135deg, #4a7c59 0%, #388a7a 100%);
+      color: white;
+      box-shadow: 0 8px 25px rgba(74, 124, 89, 0.3);
+    }
+
+    #user-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(123, 166, 158, 0.4);
+    }
+
+    /* Output Card */
+    .output-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 10px 40px rgba(26, 77, 66, 0.08);
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    .output-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      border-radius: 24px 24px 0 0;
+    }
+
+    .output-card h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1a4d42;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    #output {
+      background: #f8fffe;
+      border-radius: 16px;
+      padding: 30px;
+      min-height: 200px;
+      border: 2px solid #e6f7f3;
+      color: #1a4d42;
+      font-size: 1rem;
+      line-height: 1.6;
+      overflow-y: auto;
+      max-height: 400px;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #7ba69e;
+      font-style: italic;
+      padding: 50px;
+      font-size: 1.2rem;
+    }
+
+    /* Messages */
+    #add-message,
+    #delete-message,
+    #update-message,
+    #button-message {
+      padding: 15px 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+      text-align: center;
+      font-weight: 600;
+      animation: slideIn 0.3s ease-out;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+    }
+
+    .success {
+      background: linear-gradient(135deg, #4a7c59 0%, #388a7a 100%);
+      color: white;
+      box-shadow: 0 4px 20px rgba(74, 124, 89, 0.3);
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .error {
+      background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+      color: white;
+      box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Loading State */
+    .loading {
+      position: relative;
+      color: transparent;
+    }
+
+    .loading::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top: 2px solid #ffffff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    /* Scrollbar Styling */
+    #output::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #output::-webkit-scrollbar-track {
+      background: rgba(56, 138, 122, 0.1);
+      border-radius: 4px;
+    }
+
+    #output::-webkit-scrollbar-thumb {
+      background: rgba(56, 138, 122, 0.3);
+      border-radius: 4px;
+    }
+
+    #output::-webkit-scrollbar-thumb:hover {
+      background: rgba(56, 138, 122, 0.5);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .card-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 25px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 20px;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+      }
+
+      .card,
+      .output-card {
+        padding: 30px;
+      }
+
+      .card h2,
+      .output-card h2 {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        padding: 40px 0;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .card,
+      .output-card {
+        padding: 25px;
+      }
+
+      .input-container input {
+        padding: 14px 16px;
+      }
+
+      button {
+        padding: 14px 20px;
+        font-size: 1rem;
+      }
+    }
+
+    /* Button Variants */
+    #add-user-form button {
+      background: linear-gradient(135deg, #1B263B 0%, #274C77 100%);
+      color: white;
+      box-shadow: 0 8px 25px rgba(39, 76, 119, 0.3);
+    }
+
+    #add-user-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(39, 76, 119, 0.4);
+    }
+
+    /* Delete Button */
+    #delete-post-form button {
+      background: linear-gradient(135deg, #1B263B 0%, #274C77 100%);
+      color: white;
+      box-shadow: 0 8px 25px rgba(39, 76, 119, 0.3);
+    }
+
+    #delete-post-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(13, 27, 42, 0.4);
+    }
+
+    /* Update Button */
+    #update-post-form button {
+      background: linear-gradient(135deg, #1B263B 0%, #274C77 100%);
+      color: white;
+      box-shadow: 0 8px 25px rgba(39, 76, 119, 0.3);
+    }
+
+    #update-post-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(96, 150, 186, 0.4);
+    }
+
+    /* User Button */
+    #user-btn {
+      background: linear-gradient(135deg, #1B263B 0%, #274C77 100%);
+      color: white;
+      box-shadow: 0 8px 25px rgba(39, 76, 119, 0.3);
+    }
+
+    #user-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(163, 206, 241, 0.4);
+    }
+
+    button {
+      background: linear-gradient(135deg, #274C77, #1B263B);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(39, 76, 119, 0.3);
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(39, 76, 119, 0.4);
+    }
+
+    .get-users-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    .get-users-btn {
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #2b6777, #52ab98);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .get-users-btn:hover {
+      background: linear-gradient(135deg, #52ab98, #2b6777);
+      transform: translateY(-2px);
+    }
+
+    #get-user-c{
+      margin: 30px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="bg-gradient-overlay"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+
+  <!-- Floating Background Elements -->
+  <div class="floating-shape floating-shape-1"></div>
+  <div class="floating-shape floating-shape-2"></div>
+  <div class="floating-shape floating-shape-3"></div>
+
+  <div class="header">
+    <h1>User Management System</h1>
+    <p>Complete CRUD operations for user management</p>
+  </div>
+
+  <div class="container">
+    <div class="card-grid">
+      <div class="card">
+        <h2>ADD USER</h2>
+        <form id="add-user-form">
+          <div class="form-group">
+            <label for="id">User ID</label>
+            <div class="input-container">
+              <input type="text" id="id" name="id" placeholder="Enter user ID" required>
+              <div class="input-glow"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <div class="input-container">
+              <input type="text" id="name" name="name" placeholder="Enter full name" required>
+              <div class="input-glow"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="salary">Salary</label>
+            <div class="input-container">
+              <input type="number" id="salary" name="salary" placeholder="Enter salary" step="0.01" required>
+              <div class="input-glow"></div>
+            </div>
+          </div>
+          <button type="submit">Add User</button>
+        </form>
+        <div id="add-message"></div>
+      </div>
+
+      <div class="card">
+        <h2>DELETE CARD</h2>
+        <form id="delete-post-form">
+          <div class="form-group">
+            <label for="deleteId">User ID</label>
+            <div class="input-container">
+              <input type="text" id="deleteId" name="deleteId" placeholder="Enter user ID to delete" required>
+              <div class="input-glow"></div>
+            </div>
+          </div>
+          <button type="submit">Delete User</button>
+        </form>
+        <div id="delete-message"></div>
+      </div>
+
+      <div class="card">
+        <h2>UPDATE USER</h2>
+        <form id="update-post-form">
+          <div class="form-group">
+            <label for="updateId">User ID</label>
+            <div class="input-container">
+              <input type="text" id="updateId" name="updateId" placeholder="Enter user ID to update" required>
+              <div class="input-glow"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="updateName">Full Name</label>
+            <div class="input-container">
+              <input type="text" id="updateName" name="updateName" placeholder="Enter new full name" required>
+              <div class="input-glow"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="updateSalary">Salary</label>
+            <div class="input-container">
+              <input type="number" id="updateSalary" name="updateSalary" placeholder="Enter new salary" step="0.01"
+                required>
+              <div class="input-glow"></div>
+            </div>
+          </div>
+          <button type="submit">Update User</button>
+        </form>
+        <div id="update-message"></div>
+      </div>
+    </div>
+    <div class="card" id="get-user-c">
+        <h2>GET USER</h2>
+        <button id="user-btn">Show All Users</button>
+        <div id="button-message"></div>
+      </div>
+    <div class="output-card">
+      <h2>USER DATABASE</h2>
+      <div id="output">
+        <div class="empty-state">Click "Show All Users" to view the database</div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script>
+    // GSAP Animation Setup
+    gsap.registerPlugin();
+
+    // Initial setup - hide elements for animation
+    gsap.set([".header h1", ".header p"], { opacity: 0, y: -50 });
+    gsap.set(".card", { opacity: 0, y: 50, scale: 0.8 });
+    gsap.set(".output-card", { opacity: 0, y: 50 });
+    gsap.set(".floating-shape", { opacity: 0, scale: 0 });
+
+    // Page Load Timeline
+    const tl = gsap.timeline();
+
+    // Header animation
+    tl.to(".header h1", {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "back.out(1.7)"
+    })
+      .to(".header p", {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out"
+      }, "-=0.4")
+
+      // Floating shapes animation
+      .to(".floating-shape", {
+        opacity: 1,
+        scale: 1,
+        duration: 1,
+        stagger: 0.2,
+        ease: "elastic.out(1, 0.5)"
+      }, "-=0.5")
+
+      // Cards animation
+      .to(".card", {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.6,
+        stagger: 0.15,
+        ease: "back.out(1.7)"
+      }, "-=0.8")
+
+      // Output card animation
+      .to(".output-card", {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out"
+      }, "-=0.3");
+
+    // Floating shapes continuous animation
+    gsap.to(".floating-shape-1", {
+      x: 30,
+      y: -20,
+      rotation: 360,
+      duration: 8,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+
+    gsap.to(".floating-shape-2", {
+      x: -25,
+      y: 35,
+      rotation: -360,
+      duration: 12,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+
+    gsap.to(".floating-shape-3", {
+      x: -15,
+      y: -30,
+      rotation: 360,
+      duration: 10,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+
+    // Form input animations
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('focus', () => {
+        gsap.to(input, {
+          scale: 1.02,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        gsap.to(input.closest('.form-group').querySelector('label'), {
+          color: '#388a7a',
+          y: -2,
+          duration: 0.3
+        });
+      });
+
+      input.addEventListener('blur', () => {
+        gsap.to(input, {
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        gsap.to(input.closest('.form-group').querySelector('label'), {
+          color: '#1a4d42',
+          y: 0,
+          duration: 0.3
+        });
+      });
+    });
+
+    // Button click animations
+    document.querySelectorAll('button').forEach(button => {
+      button.addEventListener('click', (e) => {
+        // Create ripple effect
+        const ripple = document.createElement('div');
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+
+        ripple.style.cssText = `
+                      position: absolute;
+                      width: ${size}px;
+                      height: ${size}px;
+                      left: ${x}px;
+                      top: ${y}px;
+                      background: rgba(255, 255, 255, 0.3);
+                      border-radius: 50%;
+                      pointer-events: none;
+                      transform: scale(0);
+                      z-index: 1;
+                  `;
+
+        button.appendChild(ripple);
+
+        gsap.to(ripple, {
+          scale: 1,
+          opacity: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          onComplete: () => ripple.remove()
+        });
+
+        // Button press animation
+        gsap.to(button, {
+          scale: 0.95,
+          duration: 0.1,
+          ease: "power2.out",
+          onComplete: () => {
+            gsap.to(button, {
+              scale: 1,
+              duration: 0.2,
+              ease: "back.out(1.7)"
+            });
+          }
+        });
+      });
+    });
+
+    // Message animation function
+    function animateMessage(messageElement, type = 'success') {
+      gsap.set(messageElement, { opacity: 0, y: 20, scale: 0.8 });
+
+      const tl = gsap.timeline();
+      tl.to(messageElement, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.5,
+        ease: "back.out(1.7)"
+      })
+        .to(messageElement, {
+          opacity: 0,
+          y: -10,
+          duration: 0.3,
+          ease: "power2.in",
+          delay: 3
+        });
+    }
+
+    // Output content animation
+    function animateOutput() {
+      const output = document.getElementById('output');
+      gsap.fromTo(output,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
+      );
+    }
+
+    // Card hover animations
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        gsap.to(card, {
+          y: -12,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+
+      card.addEventListener('mouseleave', () => {
+        gsap.to(card, {
+          y: 0,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+    });
+
+    // Form submission loading animation
+    function showLoadingState(button) {
+      const originalText = button.textContent;
+      button.classList.add('loading');
+
+      gsap.to(button, {
+        scale: 0.95,
+        duration: 0.2,
+        ease: "power2.out"
+      });
+
+      return () => {
+        button.classList.remove('loading');
+        gsap.to(button, {
+          scale: 1,
+          duration: 0.3,
+          ease: "back.out(1.7)"
+        });
+      };
+    }
+
+    // Enhanced scroll animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Add scroll-triggered animations for elements that might be off-screen
+    gsap.utils.toArray('.card, .output-card').forEach(element => {
+      gsap.fromTo(element,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: element,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    });
+
+    // Expose animation functions for your script.js to use
+    window.userSystemAnimations = {
+      animateMessage,
+      animateOutput,
+      showLoadingState
+    };
+    // Ensure DOM and GSAP are ready
+    window.addEventListener('DOMContentLoaded', () => {
+      // Refresh ScrollTrigger after all GSAP load animations
+      ScrollTrigger.refresh();
+
+      // Scroll animation for .card
+      ScrollTrigger.batch('.card', {
+        onEnter: (elements) => {
+          gsap.fromTo(elements,
+            { opacity: 0, y: 50, scale: 0.9 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.8,
+              stagger: 0.1,
+              ease: "back.out(1.7)"
+            }
+          );
+        },
+        start: "top 90%",
+        once: true,
+      });
+
+      // Scroll animation for .output-card
+      ScrollTrigger.batch('.output-card', {
+        onEnter: (elements) => {
+          gsap.fromTo(elements,
+            { opacity: 0, y: 50 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power2.out"
+            }
+          );
+        },
+        start: "top 90%",
+        once: true,
+      });
+    });
+
+
+  </script>
+  <script src="./script.js"></script>
+</body>
+
+</html>
